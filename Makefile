@@ -83,13 +83,17 @@ upgrade-kind-images: | $(NEEDS_CRANE)
 ## SHA learning targets
 
 # Learn the shas for the tools in the tools module.
-# This will update the tools module with the new shas, this is
-# useful after bumping the versions in the tools module Makefile.
-# We will also check the kind images and update them if the kind
-# version has been bumped.
+#
+# This will update the tools module with the new shas, this is useful after
+# bumping the versions in the tools module Makefile. We will also check the kind
+# images and update them if the kind version has been bumped.
+#
+# The vendor-go target is used because we need the tools built by Go to always
+# have the same checksum.
 .PHONY: learn-tools-shas
 learn-tools-shas: | $(NEEDS_CRANE)
-	./scripts/learn_tools_shas.sh tools vendor-go
+	make vendor-go
+	GO=_bin/tools/go ./scripts/learn_tools_shas.sh tools
 	@CRANE=$(CRANE) \
 		./scripts/learn_kind_images.sh
 

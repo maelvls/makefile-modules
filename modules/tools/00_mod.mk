@@ -260,7 +260,7 @@ ifneq ($(shell command -v go >/dev/null || echo notfound),)
 __require-go:
 	@:$(error "$(GO) (or run 'make vendor-go')")
 endif
-GO := go
+GO ?= go
 NEEDS_GO = __require-go
 else
 export GOROOT := $(CURDIR)/$(bin_dir)/tools/goroot
